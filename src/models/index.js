@@ -1,11 +1,12 @@
 'use strict';
 
 const { Sequelize, DataTypes } = require('sequelize');
-const DATABASE_URL = process.env.DATABASE_URL || "sqlite::memory:";
-const messagesSchema = require('./cars.js');
+const carsSchema = require('./cars.js');
+const customerSchema = require('./customer.js');
+const Collection = require('./Collection');
 
-// sequelize singleton
-// in production we want to add this object:
+const DATABASE_URL = process.env.NODE_ENV === 'test' ? 'sqlite::memory:' : process.env.DATABASE_URL;
+
 let herokuOptions = {
   dialectOptions: {
     ssl: {
@@ -16,9 +17,11 @@ let herokuOptions = {
 }
 let sequelize = new Sequelize(DATABASE_URL, process.env === 'production' ? herokuOptions : {});
 
-let MessagesModel = messagesSchema(sequelize, DataTypes);
+const CarsModel = carsSchema(sequelize, DataTypes);
+const CustomerModel = customerSchema(sequelize, DataTypes);
 
 module.exports = {
-  Messages: MessagesModel,
   db: sequelize,
-}
+  Cars: new Collection(CarsModel),
+  Customer: new Collection(CustomerModel),
+};
