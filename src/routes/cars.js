@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const { Cars } = require('../models');
+const { Cars } = require('../models/cars.js');
 const router = express.Router();
 
 router.get('/cars', readCars);
