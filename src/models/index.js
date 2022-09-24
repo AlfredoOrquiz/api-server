@@ -16,7 +16,7 @@ let herokuOptions = {
   }
 }
 console.log(DATABASE_URL);
-let sequelize = new Sequelize(DATABASE_URL);
+let sequelize = new Sequelize(DATABASE_URL, herokuOptions);
 
 const CarsModel = carsSchema(sequelize, DataTypes);
 const CustomerModel = customerSchema(sequelize, DataTypes);
